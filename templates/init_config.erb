@@ -1,0 +1,18 @@
+# Start foreman on boot?
+START=<% if scope.lookupvar('foreman::manage_service_enable') == true -%>yes<% else -%>no<% end %>
+
+# the location where foreman is installed
+FOREMAN_HOME=<%= scope.lookupvar('foreman::basedir') %>
+
+# the network interface which foreman web server is running at
+FOREMAN_IFACE=<%= scope.lookupvar('foreman::bindaddress') %>
+
+# the port which foreman web server is running at
+# note that if the foreman user is not root, it has to be a > 1024
+FOREMAN_PORT=<%= scope.lookupvar('foreman::port') %>
+
+# the user which runs the web interface
+FOREMAN_USER=<%= scope.lookupvar('foreman::process_user') %>
+
+# the rails environment in which foreman runs
+FOREMAN_ENV=production

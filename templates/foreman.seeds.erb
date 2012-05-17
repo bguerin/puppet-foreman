@@ -1,0 +1,30 @@
+foreman	foreman/dbconfig-install		boolean		true
+foreman	foreman/dbconfig-upgrade		boolean		true
+foreman	foreman/dbconfig-reinstall		boolean		false
+foreman	foreman/dbconfig-remove			boolean	
+foreman	foreman/database-type			select		<%= scope.lookupvar('foreman::db') %>
+<% if scope.lookupvar('foreman::db') == "sqlite" -%>
+foreman	foreman/db/basepath			string		<%= scope.lookupvar('foreman::db_path') %>
+<% end -%>
+<% if scope.lookupvar('foreman::db') == "mysql" -%>
+foreman	foreman/mysql/admin-user		string		<%= scope.lookupvar('foreman::db_root_user') %>
+foreman	foreman/mysql/admin-pass		password	<%= scope.lookupvar('foreman::db_root_password') %>
+foreman	foreman/password-confirm		password	<%= scope.lookupvar('foreman::db_root_password') %>
+foreman	foreman/db/app-user			string		<%= scope.lookupvar('foreman::db_user') %>
+foreman	foreman/mysql/app-pass			password	<%= scope.lookupvar('foreman::db_password') %>
+foreman	foreman/app-password-confirm		password	<%= scope.lookupvar('foreman::db_password') %>
+foreman	foreman/mysql/method			select		unix socket
+<% end -%>
+<% if scope.lookupvar('foreman::db') == "postgresql" -%>
+foreman	foreman/pgsql/admin-user		string		<%= scope.lookupvar('foreman::db_root_user') %>
+foreman	foreman/pgsql/admin-pass		password	<%= scope.lookupvar('foreman::db_root_password') %>
+foreman	foreman/password-confirm		password	<%= scope.lookupvar('foreman::db_root_password') %>
+foreman	foreman/db/app-user			string		<%= scope.lookupvar('foreman::db_user') %>
+foreman	foreman/pgsql/app-pass			password	<%= scope.lookupvar('foreman::db_password') %>
+foreman	foreman/app-password-confirm		password	<%= scope.lookupvar('foreman::db_password') %>
+foreman	foreman/pgsql/method			select		unix socket
+foreman	foreman/pgsql/authmethod-user		select
+foreman	foreman/pgsql/authmethod-admin		select		ident
+foreman	foreman/pgsql/changeconf		boolean		false
+<% end -%>
+foreman	foreman/db/dbname			string		<%= scope.lookupvar('foreman::db_name') %>
