@@ -502,9 +502,9 @@ class foreman (
   file { 'foreman.seeds':
     ensure  => $foreman::manage_file,
     path    => $foreman::preseed_file,
-    mode    => $foreman::config_file_mode,
-    owner   => $foreman::config_file_owner,
-    group   => $foreman::config_file_group,
+    mode    => 0644,
+    owner   => root,
+    group   => root,
     content => $foreman::manage_file_preseed_content,
     replace => $foreman::manage_file_replace,
     audit   => $foreman::manage_audit,
@@ -637,7 +637,7 @@ class foreman (
 
   # Passenger / SSL
   if $foreman::bool_passenger == true {
-    # TODO
+    include foreman::passenger
   }
 
   # Storeconfigs

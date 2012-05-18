@@ -3,14 +3,16 @@
 # 
 # Installs and configures passenger for Foreman
 #
-class foreman::passenger inherits foreman {
+class foreman::passenger {
+  require foreman
 
   case $::operatingsystem {
     centos: { require yum::repo::passenger }
     redhat: { require yum::repo::passenger }
   }
 
-  include apache
+  include apache::ssl
+  include apache::passenger
 
   file { "${foreman::basedir}/config.ru":
     ensure => link,
@@ -28,21 +30,7 @@ class foreman::passenger inherits foreman {
     priority => '20',
     docroot  => "${foreman::basedir}/public/",
     ssl      => true,
-    template => ${foreman::manage_file_passenger_path},
-  }
-
-  case $::operatingsystem {
-    ubuntu,debian,mint: { 
-      package { 'libapache2-mod-passenger':
-        ensure => present;
-      }     
-    }
-
-    centos,redhat,scientific,fedora: {
-      package { 'mod_passenger':
-        ensure => present;
-      }
-    }
+    template => $foreman::manage_file_passenger_path,
   }
 
 }
