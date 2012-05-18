@@ -6,17 +6,17 @@
 <% end -%>
 <% if scope.lookupvar('foreman::db') == "mysql" -%>
   adapter: mysql
-  database: <% scope.lookupvar('foreman::db_name') %>
-  username: <% scope.lookupvar('foreman::db_user') %>
-  password: <% scope.lookupvar('foreman::db_password') %>
-  host: <% scope.lookupvar('foreman::db_server') %>
+  database: <%= scope.lookupvar('foreman::db_name') %>
+  username: <%= scope.lookupvar('foreman::db_user') %>
+  password: <%= scope.lookupvar('foreman::db_password') %>
+  host: <%= scope.lookupvar('foreman::db_server') %>
 <% end -%>
 <% if scope.lookupvar('foreman::db') == "postgresql" -%>
   adapter: postgresql
-  database: <% scope.lookupvar('foreman::db_name') %>
-  username: <% scope.lookupvar('foreman::db_user') %>
-  password: <% scope.lookupvar('foreman::db_password') %>
-  host: <% scope.lookupvar('foreman::db_server') %>
+  database: <%= scope.lookupvar('foreman::db_name') %>
+  username: <%= scope.lookupvar('foreman::db_user') %>
+  password: <%= scope.lookupvar('foreman::db_password') %>
+  host: <%= scope.lookupvar('foreman::db_server') %>
 <% end -%>
   encoding: utf8
 <% end -%>
