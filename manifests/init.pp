@@ -645,7 +645,7 @@ class foreman (
     exec{"db-migrate":
       command => "/usr/bin/rake RAILS_ENV=production db:migrate",
       cwd => $foreman::basedir,
-      require => Service["puppet"],
+      require => Service["foreman"],
       subscribe => Package["foreman"],
       refreshonly => true,
     }
