@@ -35,7 +35,8 @@
 #   Names of the environments managed by foreman
 #
 # [*enc*]
-#   Should foreman act as an external node classifier (manage puppet class assignments)
+#   Should foreman act as an external node classifier
+#   (manage puppet class assignments)
 #
 # [*reports*]
 #   Should foreman receive reports from puppet
@@ -44,7 +45,8 @@
 #   Should foreman recive facts from puppet
 #
 # [*storeconfigs*]
-#   Do you use storeconfig (and run foreman on the same database) ? (note: not required)
+#   Do you use storeconfig (and run foreman on the same database) ?
+#   (note: not required)
 #
 # [*unattended*]
 #   should foreman manage host provisioning as well
@@ -77,10 +79,12 @@
 #   Path of the database file when using a SQLite database
 #
 # [*db_root_user*]
-#   Super-user of the database server to connect to. Used to create tables
+#   Super-user of the database server to connect to.
+#   Used to create tables
 #
 # [*db_root_password*]
-#   Password of the super-user of the database server to connect to. Used to create tables
+#   Password of the super-user of the database server to connect to.
+#   Used to create tables
 #
 # [*db_mysql_package*]
 #   Name of the package to install to use a MySQL database
@@ -511,7 +515,7 @@ class foreman (
   file { 'foreman.seeds':
     ensure  => $foreman::manage_file,
     path    => $foreman::preseed_file,
-    mode    => 0644,
+    mode    => '0644',
     owner   => root,
     group   => root,
     content => $foreman::manage_file_preseed_content,
@@ -615,14 +619,15 @@ class foreman (
       audit   => $foreman::manage_audit,
     }
 
-    # ensure directories ${foreman::puppet_data_dir}/yaml and ${foreman::puppet_data_dir}/yaml/foreman : puppet/puppet ; 640
+    # ensure directories ${foreman::puppet_data_dir}/yaml
+    # and ${foreman::puppet_data_dir}/yaml/foreman : puppet/puppet ; 640
   }
 
   # Reports
   if $foreman::bool_reports == true {
     file { 'foreman.rb':
       ensure  => $foreman::manage_file,
-      path    => "/usr/lib/ruby/1.8/puppet/reports/foreman.rb",
+      path    => '/usr/lib/ruby/1.8/puppet/reports/foreman.rb',
       mode    => $foreman::config_file_mode,
       owner   => $foreman::puppet_config_file_owner,
       group   => $foreman::puppet_config_file_group,
@@ -651,11 +656,11 @@ class foreman (
 
   # Storeconfigs
   if $foreman::bool_storeconfigs == true {
-    exec{"db-migrate":
-      command => "/usr/bin/rake RAILS_ENV=production db:migrate",
-      cwd => $foreman::basedir,
-      require => Service["foreman"],
-      subscribe => Package["foreman"],
+    exec{ 'db-migrate':
+      command     => '/usr/bin/rake RAILS_ENV=production db:migrate',
+      cwd         => $foreman::basedir,
+      require     => Service['foreman'],
+      subscribe   => Package['foreman'],
       refreshonly => true,
     }
   }
