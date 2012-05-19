@@ -1,4 +1,4 @@
-<% scope.lookupvar('foreman::environments').each do |environment| %>
+<% scope.lookupvar('foreman::environments').split(',').each do |environment| %>
 <%= environment %>:
 <% if scope.lookupvar('foreman::db') == "sqlite" -%>
   adapter: sqlite3

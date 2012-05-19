@@ -43,7 +43,7 @@ class foreman::params {
 
   $bindaddress = '0.0.0.0'
 
-  $environments = [ 'production' ]
+  $environments = 'production'
 
   # Perhaps this should be $puppet::params::nodetool == 'foreman' ?
   $enc = true
