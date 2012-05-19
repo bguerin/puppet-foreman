@@ -108,6 +108,8 @@ class foreman::params {
 
   $template_passenger = ''
 
+  $template_reports = ''
+
   $script_file_mode = $::operatingsystem ? {
     default => '0550',
   }

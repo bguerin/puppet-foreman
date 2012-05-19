@@ -103,6 +103,9 @@
 # [*template_passenger*]
 #   Path to the template of the passenger vhost configuration file
 #
+# [*template_reports*]
+#   Path to the template of reports script
+#
 # [*script_file_mode*]
 #   Rights to set on script files
 #
@@ -340,6 +343,7 @@ class foreman (
   $template_enc             = params_lookup( 'template_enc' ),
   $template_preseed         = params_lookup( 'template_preseed' ),
   $template_passenger       = params_lookup( 'template_passenger' ),
+  $template_reports         = params_lookup( 'template_reports' ),
   $script_file_mode         = params_lookup( 'script_file_mode' ),
   $my_class                 = params_lookup( 'my_class' ),
   $source                   = params_lookup( 'source' ),
@@ -496,6 +500,11 @@ class foreman (
   $manage_file_passenger_path = $foreman::template_passenger ? {
     ''        => 'foreman/foreman-passenger.conf.erb',
     default   => $foreman::template_passenger,
+  }
+
+  $manage_file_reports_content = $foreman::template_reports ? {
+    ''        => template('foreman/foreman-report.rb.erb'),
+    default   => template($foreman::template_reports),
   }
 
   ### Managed resources
