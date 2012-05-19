@@ -21,14 +21,14 @@ class foreman::repository inherits foreman {
     redhat,centos,fedora,Scientific: {
       yumrepo {
         'foreman':
-          descr => 'Foreman stable repository',
-          baseurl => 'http://yum.theforeman.org/stable',
+          descr    => 'Foreman stable repository',
+          baseurl  => 'http://yum.theforeman.org/stable',
           gpgcheck => '0',
-          enabled => '1';
+          enabled  => '1';
         'foreman-testing':
-          descr => 'Foreman testing repository',
-          baseurl => 'http://yum.theforeman.org/test',
-          enabled => '0',
+          descr    => 'Foreman testing repository',
+          baseurl  => 'http://yum.theforeman.org/test',
+          enabled  => '0',
           gpgcheck => '0',
       }
     }
@@ -39,12 +39,12 @@ class foreman::repository inherits foreman {
       }
       ~>
       exec { 'foreman-key':
-        command => '/usr/bin/wget -q http://deb.theforeman.org/foreman.asc -O- | /usr/bin/apt-key add -',
+        command     => '/usr/bin/wget -q http://deb.theforeman.org/foreman.asc -O- | /usr/bin/apt-key add -',
         refreshonly => true
       }
       ~>
       exec { 'update-apt':
-        command => '/usr/bin/apt-get update',
+        command     => '/usr/bin/apt-get update',
         refreshonly => true
       }
     }
