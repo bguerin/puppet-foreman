@@ -4,7 +4,7 @@ SETTINGS = {
   :url          => "<%= scope.lookupvar('foreman::url')%>",
   :puppetdir    => "<%= scope.lookupvar('foreman::puppet_data_dir')%>",
   :facts        => "<%= scope.lookupvar('foreman::bool_facts')%>",
-  :storeconfigs => "<%= scope.lookupvar('foreman::bool_storeconfig')%>",
+  :storeconfigs => "<%= scope.lookupvar('foreman::bool_storeconfigs')%>",
   :timeout      => 3,
 }
 
