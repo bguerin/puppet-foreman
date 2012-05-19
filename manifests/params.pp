@@ -178,7 +178,7 @@ class foreman::params {
   }
 
   $log_file = $::operatingsystem ? {
-    default => "/var/log/foreman/production.log",
+    default => '/var/log/foreman/production.log',
   }
 
   $port = '3000'
@@ -188,7 +188,7 @@ class foreman::params {
   $my_class = ''
   $source = ''
   $source_dir = ''
-  $source_dir_purge = 'false'
+  $source_dir_purge = false
   $template = ''
   $options = ''
   $service_autorestart = true
