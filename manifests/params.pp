@@ -60,7 +60,7 @@ class foreman::params {
   $authentication = false
 
   # Perhaps this should be $puppet::params::passenger ?
-  $passenger = true
+  $passenger = false
 
   $ssl = true
 

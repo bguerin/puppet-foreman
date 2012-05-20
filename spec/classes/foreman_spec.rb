@@ -4,13 +4,21 @@ describe 'foreman' do
 
   let(:title) { 'foreman' }
   let(:node) { 'rspec.example42.com' }
-  let(:facts) { { :ipaddress => '10.42.42.42' } }
+  let(:facts) { { :ipaddress => '10.42.42.42', :operatingsystem => 'Debian' } }
 
   describe 'Test standard installation' do
     it { should contain_package('foreman').with_ensure('present') }
     it { should contain_service('foreman').with_ensure('running') }
     it { should contain_service('foreman').with_enable('true') }
-    it { should contain_file('foreman.conf').with_ensure('present') }
+    it { should contain_file('settings.yaml').with_ensure('present') }
+  end
+
+  describe 'Test passenger installation' do
+    let(:params) { {:passenger => true } }
+    it { should contain_package('foreman').with_ensure('present') }
+    it { should contain_service('foreman').with_ensure('stopped') }
+    it { should contain_service('foreman').with_enable('false') }
+    it { should contain_file('settings.yaml').with_ensure('present') }
   end
 
   describe 'Test installation of a specific version' do
@@ -24,7 +32,7 @@ describe 'foreman' do
     it { should contain_package('foreman').with_ensure('present') }
     it { should contain_service('foreman').with_ensure('running') }
     it { should contain_service('foreman').with_enable('true') }
-    it { should contain_file('foreman.conf').with_ensure('present') }
+    it { should contain_file('settings.yaml').with_ensure('present') }
     it 'should monitor the process' do
       content = catalogue.resource('monitor::process', 'foreman_process').send(:parameters)[:enable]
       content.should == true
@@ -41,7 +49,7 @@ describe 'foreman' do
     it 'should remove Package[foreman]' do should contain_package('foreman').with_ensure('absent') end 
     it 'should stop Service[foreman]' do should contain_service('foreman').with_ensure('stopped') end
     it 'should not enable at boot Service[foreman]' do should contain_service('foreman').with_enable('false') end
-    it 'should remove foreman configuration file' do should contain_file('foreman.conf').with_ensure('absent') end
+    it 'should remove foreman configuration file' do should contain_file('settings.yaml').with_ensure('absent') end
     it 'should not monitor the process' do
       content = catalogue.resource('monitor::process', 'foreman_process').send(:parameters)[:enable]
       content.should == false
@@ -58,7 +66,7 @@ describe 'foreman' do
     it { should contain_package('foreman').with_ensure('present') }
     it 'should stop Service[foreman]' do should contain_service('foreman').with_ensure('stopped') end
     it 'should not enable at boot Service[foreman]' do should contain_service('foreman').with_enable('false') end
-    it { should contain_file('foreman.conf').with_ensure('present') }
+    it { should contain_file('settings.yaml').with_ensure('present') }
     it 'should not monitor the process' do
       content = catalogue.resource('monitor::process', 'foreman_process').send(:parameters)[:enable]
       content.should == false
@@ -76,7 +84,7 @@ describe 'foreman' do
     it { should_not contain_service('foreman').with_ensure('present') }
     it { should_not contain_service('foreman').with_ensure('absent') }
     it 'should not enable at boot Service[foreman]' do should contain_service('foreman').with_enable('false') end
-    it { should contain_file('foreman.conf').with_ensure('present') }
+    it { should contain_file('settings.yaml').with_ensure('present') }
     it 'should not monitor the process locally' do
       content = catalogue.resource('monitor::process', 'foreman_process').send(:parameters)[:enable]
       content.should == false
@@ -91,11 +99,11 @@ describe 'foreman' do
     let(:params) { {:template => "foreman/spec.erb" , :options => { 'opt_a' => 'value_a' } } }
 
     it 'should generate a valid template' do
-      content = catalogue.resource('file', 'foreman.conf').send(:parameters)[:content]
+      content = catalogue.resource('file', 'settings.yaml').send(:parameters)[:content]
       content.should match "fqdn: rspec.example42.com"
     end
     it 'should generate a template that uses custom options' do
-      content = catalogue.resource('file', 'foreman.conf').send(:parameters)[:content]
+      content = catalogue.resource('file', 'settings.yaml').send(:parameters)[:content]
       content.should match "value_a"
     end
 
@@ -105,7 +113,7 @@ describe 'foreman' do
     let(:params) { {:source => "puppet://modules/foreman/spec" , :source_dir => "puppet://modules/foreman/dir/spec" , :source_dir_purge => true } }
 
     it 'should request a valid source ' do
-      content = catalogue.resource('file', 'foreman.conf').send(:parameters)[:source]
+      content = catalogue.resource('file', 'settings.yaml').send(:parameters)[:source]
       content.should == "puppet://modules/foreman/spec"
     end
     it 'should request a valid source dir' do
@@ -121,14 +129,14 @@ describe 'foreman' do
   describe 'Test customizations - custom class' do
     let(:params) { {:my_class => "foreman::spec" } }
     it 'should automatically include a custom class' do
-      content = catalogue.resource('file', 'foreman.conf').send(:parameters)[:content]
+      content = catalogue.resource('file', 'settings.yaml').send(:parameters)[:content]
       content.should match "fqdn: rspec.example42.com"
     end
   end
 
   describe 'Test service autorestart', :broken => true do
     it 'should automatically restart the service, by default' do
-      content = catalogue.resource('file', 'foreman.conf').send(:parameters)[:notify]
+      content = catalogue.resource('file', 'settings.yaml').send(:parameters)[:notify]
       content.should == 'Service[foreman]{:name=>"foreman"}'
     end
   end
@@ -137,7 +145,7 @@ describe 'foreman' do
     let(:params) { {:service_autorestart => "no" } }
 
     it 'should not automatically restart the service, when service_autorestart => false' do
-      content = catalogue.resource('file', 'foreman.conf').send(:parameters)[:notify]
+      content = catalogue.resource('file', 'settings.yaml').send(:parameters)[:notify]
       content.should be_nil
     end
   end
