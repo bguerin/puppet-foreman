@@ -15,7 +15,7 @@ class foreman::spec inherits foreman {
   # Note that you can achieve this same result with just:
   # class { "foreman": template => "foreman/spec.erb" }
 
-  File['foreman.conf'] {
+  File['settings.yaml'] {
     content => template('foreman/spec.erb'),
   }
 
