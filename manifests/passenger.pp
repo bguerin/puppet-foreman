@@ -16,9 +16,8 @@ class foreman::passenger {
   include apache::passenger
 
   file { "${foreman::basedir}/config.ru":
-    ensure => link,
-    owner  => $foreman::process_user,
-    target => "${foreman::basedir}/vendor/rails/railties/dispatches/config.ru",
+    owner   => $foreman::process_user,
+    require => Class['foreman'],
   }
 
   file { "${foreman::basedir}/config/environment.rb":
