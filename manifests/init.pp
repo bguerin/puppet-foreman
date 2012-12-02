@@ -531,6 +531,11 @@ class foreman (
     require      => File['foreman.seeds'],
   }
 
+  user { $foreman::process_user:
+    shell       => '/bin/sh',
+    require     => Package['foreman']
+  }
+
   case $foreman::db {
     mysql: {
       package { 'foreman-db':
