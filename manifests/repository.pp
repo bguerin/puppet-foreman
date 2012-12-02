@@ -35,7 +35,7 @@ class foreman::repository inherits foreman {
 
     Debian,Ubuntu: {
       file { '/etc/apt/sources.list.d/foreman.list':
-        content => "deb http://deb.theforeman.org/ stable main\n"
+        content => "deb http://deb.theforeman.org/ squeeze stable\n"
       }
       ~>
       exec { 'foreman-key':
