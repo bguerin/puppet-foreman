@@ -19,7 +19,7 @@ class foreman::params {
   $url = "http://${::fqdn}"
 
   # Perhaps this should be $puppet::params::server ?
-  $puppet_server = "puppet.$::domain"
+  $puppet_server = "puppet.${::domain}"
 
   # Perhaps this should be $puppet::params::config_dir ?
   $puppet_config_dir = '/etc/puppet'
