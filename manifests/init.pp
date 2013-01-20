@@ -632,7 +632,7 @@ class foreman (
   if $foreman::bool_reports == true {
     file { 'foreman.rb':
       ensure  => $foreman::manage_file,
-      path    => '/usr/lib/ruby/1.8/puppet/reports/foreman.rb',
+      path    => '/usr/lib/ruby/vendor_ruby/puppet/reports/foreman.rb',
       mode    => $foreman::config_file_mode,
       owner   => $foreman::puppet_config_file_owner,
       group   => $foreman::puppet_config_file_group,
